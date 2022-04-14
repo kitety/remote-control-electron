@@ -16,7 +16,7 @@ function create() {
       contextIsolation: false,
     },
   });
-  win.webContents.openDevTools()
+  win.webContents.openDevTools();
   // if (isDev) {
   //   win.loadURL("http://localhost:3000");
   // } else {
@@ -26,4 +26,7 @@ function create() {
   );
   // }
 }
-module.exports = { createControlWindow: create };
+function sendControlWindow(channel, ...args) {
+  win.webContents.send(channel, ...args);
+}
+module.exports = { createControlWindow: create, sendControlWindow };

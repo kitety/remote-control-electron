@@ -11,12 +11,14 @@ function App() {
 
   const login = async () => {
     let code = await ipcRenderer.invoke("login");
+    console.log("code: ", code);
     setLocalCode(code);
   };
   const startControl = (code) => {
     ipcRenderer.invoke("control", code);
   };
   const handleControlState = (e, name, type, value) => {
+    console.log("type: ", type);
     let text = "";
     if (type === 1) {
       text = `正在远程控制:${name}`;

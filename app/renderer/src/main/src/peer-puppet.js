@@ -6,8 +6,12 @@ const pc = new window.RTCPeerConnection({});
 
 pc.onicecandidate = (event) => {
   console.log("event: ", JSON.stringify(event.candidate));
+  event.candidate &&
+    ipcRenderer.send("forward", "puppet-candidate", event.candidate);
 };
-
+ipcRenderer.on("icecandidate", (candidate) => {
+  candidate && addIceCandidate(candidate);
+});
 let candidates = [];
 async function addIceCandidate(candicate) {
   console.log("candicate: ", candicate);
@@ -23,7 +27,11 @@ async function addIceCandidate(candicate) {
     candidates = [];
   }
 }
-window.addIceCandidate = addIceCandidate;
+
+ipcRenderer.on("offer", async (e, offer) => {
+  let answer = await createAnswer(offer);
+  ipcRenderer.send("forward", "answer", { type: answer.type, sdp: answer.sdp });
+});
 
 async function getScreenStream() {
   const sources = await ipcRenderer.invoke("DESKTOP_CAPTURER_GET_SOURCES", {

@@ -47,7 +47,15 @@ const pc = new window.RTCPeerConnection({});
 
 pc.onicecandidate = (event) => {
   console.log("event: ", JSON.stringify(event.candidate));
+  ipcRenderer.send(
+    "forward",
+    "control-candidate",
+    JSON.stringify(event.candidate)
+  );
 };
+ipcRenderer.on("candidate", (candidate) => {
+  addIceCandidate(candidate);
+});
 
 let candidates = [];
 async function addIceCandidate(candicate) {
@@ -64,7 +72,7 @@ async function addIceCandidate(candicate) {
     candidates = [];
   }
 }
-window.addIceCandidate = addIceCandidate;
+// window.addIceCandidate = addIceCandidate;
 
 async function createOffer() {
   const offer = await pc.createOffer({
@@ -76,12 +84,17 @@ async function createOffer() {
 
   return pc.localDescription;
 }
-createOffer();
+createOffer().then((offer) => {
+  ipcRenderer.send("forward", "offer", { type: offer.type, sdp: offer.sdp });
+});
 
 async function setRemote(answer) {
   await pc.setRemoteDescription(answer);
 }
-window.setRemote = setRemote;
+ipcRenderer.on("answer", (e, answer) => {
+  setRemote(answer);
+});
+// window.setRemote = setRemote;
 pc.onaddstream = ({ stream }) => {
   console.log("add-stream: ", stream);
   peer.emit("add-stream", stream);
