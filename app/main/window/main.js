@@ -22,4 +22,4 @@ function create() {
 function sendMainWindow(channel, ...args) {
   win.webContents.send(channel, ...args);
 }
-module.exports = { createMainWindow: create,sendMainWindow };
+module.exports = { createMainWindow: create, sendMainWindow };

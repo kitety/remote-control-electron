@@ -1,6 +1,10 @@
-const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const path = require("path");
+const { ipcMain, desktopCapturer, BrowserWindow } = require("electron");
+
+ipcMain.handle("DESKTOP_CAPTURER_GET_SOURCES", (event, opts) =>
+  desktopCapturer.getSources(opts)
+);
 let win;
 
 function create() {
@@ -16,7 +20,9 @@ function create() {
   //   win.loadURL("http://localhost:3000");
   // } else {
   //   第三章
-  win.loadFile(path.resolve(__dirname, "../../renderer/pages/control/index.html"));
+  win.loadFile(
+    path.resolve(__dirname, "../../renderer/pages/control/index.html")
+  );
   // }
 }
 module.exports = { createControlWindow: create };

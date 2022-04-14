@@ -5,15 +5,19 @@
   "license": "MIT",
   "dependencies": {
     "electron": "^18.0.3",
-    "electron-is-dev": "^2.0.0"
+    "electron-is-dev": "^2.0.0",
+    "robotjs": "^0.6.0",
+    "vkey": "^1.0.1"
   },
   "scripts": {
     "start:main": "electron .",
     "start:render": "cd app/renderer/src/main && yarn start",
-    "start": "concurrently \"npm run start:render\" \"wait-on http://localhost:3000 && npm run start:main\" "
+    "start": "concurrently \"npm run start:render\" \"wait-on http://localhost:3000 && npm run start:main\" ",
+    "rebuild1": "npx electron-rebuild"
   },
   "devDependencies": {
     "concurrently": "^7.1.0",
+    "electron-rebuild": "^3.2.7",
     "wait-on": "^6.0.1"
   }
 }
