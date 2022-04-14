@@ -1,6 +1,7 @@
 import "./App.css";
 import { ipcRenderer } from "electron";
 import { useEffect, useState } from "react";
+import "./peer-puppet.js";
 console.log("ipcRenderer: ", ipcRenderer);
 
 function App() {

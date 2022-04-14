@@ -4,8 +4,8 @@ const { app } = require("electron");
 const { createControlWindow } = require("./window/controls");
 
 app.on("ready", () => {
-  // createMainWindow();
-  createControlWindow();
+  createMainWindow();
+  // createControlWindow();
   handleIPC();
   require("./robot.js")();
 });
