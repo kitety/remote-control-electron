@@ -12,6 +12,7 @@ function create() {
       contextIsolation: false,
     },
   });
+  win.webContents.openDevTools()
   if (isDev) {
     win.loadURL("http://localhost:3000");
   } else {
